@@ -32,14 +32,14 @@ namespace Arbitrage.Models.Graph
             return ver;
         }
 
-        public void AddEdge(string first_name, string second_name, float weight)
+        public void AddEdge(string first_name, string second_name, float firstWeight, float secondWeight)
         {
             var v1 = FindVertex(first_name);
             var v2 = FindVertex(second_name);
 
             if (v1 == null || v2 == null) return;
-            v1.AddEdge(v2, weight);
-            v2.AddEdge(v1, weight);
+            v1.AddEdge(v2, firstWeight);
+            v2.AddEdge(v1, secondWeight);
         }
 
         public void CreateGraph(List<Currency> currencies)
@@ -48,13 +48,9 @@ namespace Arbitrage.Models.Graph
             {
                 var first_vertex_name = pair.token0_address;
                 var second_vertex_name = pair.token1_address;
-                var weight = (float) -Math.Log(pair.token1_reverse / pair.token0_reverse, 2);
-                if (FindVertex(first_vertex_name) == null && FindVertex(second_vertex_name) == null )
-                {
-                    AddVertex(first_vertex_name);
-                    AddVertex(second_vertex_name);
-                }
-
+                var firstWeight = (float) -Math.Log(pair.token1_reverse / pair.token0_reverse, 2);
+                var secondWeight = (float) -Math.Log(pair.token0_reverse / pair.token1_reverse, 2);
+                
                 if (FindVertex(first_vertex_name) == null)
                 {
                     AddVertex(first_vertex_name);
@@ -65,7 +61,7 @@ namespace Arbitrage.Models.Graph
                     AddVertex(second_vertex_name);
                 }
                 
-                AddEdge(first_vertex_name, second_vertex_name, weight);
+                AddEdge(first_vertex_name, second_vertex_name, firstWeight, secondWeight);
 
             }
         }

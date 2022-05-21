@@ -49,12 +49,12 @@ namespace Arbitrage.Models
                         pair_number = x[i + 1];
                     }
 
-                    if (x[i].Contains("token0_address"))
+                    if (x[i].Contains("token0_name"))
                     {
                         token0_address = x[i + 1];
                     }
 
-                    if (x[i].Contains("token1_address"))
+                    if (x[i].Contains("token1_name"))
                     {
                         token1_address = x[i + 1];
                     }
