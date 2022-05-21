@@ -1,0 +1,6 @@
+/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/bin/Debug/Arbitrage.exe
+/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/bin/Debug/Arbitrage.pdb
+/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/obj/Debug/Arbitrage.csprojAssemblyReference.cache
+/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/obj/Debug/Arbitrage.csproj.CoreCompileInputs.cache
+/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/obj/Debug/Arbitrage.exe
+/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/obj/Debug/Arbitrage.pdb
