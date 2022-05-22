@@ -104,7 +104,7 @@ namespace Arbitrage.Models.Graph
             }
             
             // Step 3: Check for negative-weight cycles.
-             
+            
             for (int i = 0; i < Verticies.Count; i++)
             {
                 for (int j = 0; j < Verticies[i].Edges.Count; j++)
@@ -112,14 +112,29 @@ namespace Arbitrage.Models.Graph
                     int v = i;
                     int u = Verticies.FindIndex(x => x.Name == Verticies[i].Edges[j].Vertex.Name);
                     float weight = Verticies[i].Edges[j].Weight;
-
+                    var iterV = path[v];
                     if (distance[u] != float.MaxValue && distance[u] + weight < distance[v])
                     {
-                        Console.WriteLine("Graph conteins negative cycle!");
+                        for (int k = 0; k < Verticies.Count - 1; k++)
+                        {
+                            iterV = path[v];
+                            v = Verticies.FindIndex(x => x.Name == iterV.Name);
+                        }
+                        
+                        // Console.WriteLine($"{Verticies[u].Name} {Verticies[v].Name} ");
                     }
+
+                    u = v;
+                    while (Verticies[u] != path[v])
+                    {
+                        answer.Add(Verticies[v]);
+                        v = v = Verticies.FindIndex(x => x.Name == iterV.Name);
+                    }
+                    answer.Reverse();
+                    break;
                 }
             }
-
+            
             return answer;
         }
 
