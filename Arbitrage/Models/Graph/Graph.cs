@@ -120,18 +120,18 @@ namespace Arbitrage.Models.Graph
                             iterV = path[v];
                             v = Verticies.FindIndex(x => x.Name == iterV.Name);
                         }
-                        
+                        u = v;
+                        while (Verticies[u] != path[v])
+                        {
+                            answer.Add(Verticies[v]);
+                            v = v = Verticies.FindIndex(x => x.Name == iterV.Name);
+                        }
+                        answer.Reverse();
+                        break;
                         // Console.WriteLine($"{Verticies[u].Name} {Verticies[v].Name} ");
                     }
 
-                    u = v;
-                    while (Verticies[u] != path[v])
-                    {
-                        answer.Add(Verticies[v]);
-                        v = v = Verticies.FindIndex(x => x.Name == iterV.Name);
-                    }
-                    answer.Reverse();
-                    break;
+                    
                 }
             }
             
