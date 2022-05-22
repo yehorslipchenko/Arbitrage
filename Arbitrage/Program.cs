@@ -42,6 +42,19 @@ namespace Arbitrage
             // Create Graph
             var graph = new Graph();
             graph.CreateGraph(currency);
+            
+            // Search arbitrage opportunity
+            var res = graph.BellmanFordAlgorithm(1);
+            var ans = new List<string>();
+            foreach (var v in res)
+            {
+                ans.Add(v.Name);
+            }
+
+            foreach (var a in ans)
+            {
+                Console.WriteLine(a);
+            }
         }
     }
 }
