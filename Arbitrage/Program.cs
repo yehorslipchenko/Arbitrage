@@ -11,11 +11,15 @@ namespace Arbitrage
     {
         public static void Main(string[] args)
         {
+            /*
             // Welcome script and entering data
             Console.Write("Welcome to Arbitrage\n Please input a path to Data Set:");
             var path = Console.ReadLine();
             Console.Write("Also please input count of currencies:");
             var count_currency = int.Parse(Console.ReadLine() ?? string.Empty);
+            */
+            const string path = "/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/Data/DataSet.txt";
+            const int count_currency = 3503;
             
             // Configuring data and create list of currency how strings 
             var configureData = new ConfigureData(path, count_currency);
@@ -48,13 +52,18 @@ namespace Arbitrage
             var ans = new List<string>();
             foreach (var v in res)
             {
-                ans.Add(v.Name);
+                if (v.Name != "-1")
+                {
+                    ans.Add(v.Name);
+                }
+                
             }
 
             foreach (var a in ans)
             {
                 Console.WriteLine(a);
             }
+            
         }
     }
 }

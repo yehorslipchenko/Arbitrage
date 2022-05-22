@@ -102,7 +102,7 @@ namespace Arbitrage.Models.Graph
                     }
                 }
             }
-            
+
             // Step 3: Check for negative-weight cycles.
             
             for (int i = 0; i < Verticies.Count; i++)
@@ -123,12 +123,14 @@ namespace Arbitrage.Models.Graph
                         u = v;
                         while (Verticies[u] != path[v])
                         {
+                            iterV = path[v];
                             answer.Add(Verticies[v]);
                             v = v = Verticies.FindIndex(x => x.Name == iterV.Name);
                         }
+                        Console.WriteLine($"{Verticies[u].Name} {Verticies[v].Name} ");
                         answer.Reverse();
                         break;
-                        // Console.WriteLine($"{Verticies[u].Name} {Verticies[v].Name} ");
+                        
                     }
 
                     
