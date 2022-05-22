@@ -113,23 +113,9 @@ namespace Arbitrage.Models.Graph
                     int u = Verticies.FindIndex(x => x.Name == Verticies[i].Edges[j].Vertex.Name);
                     float weight = Verticies[i].Edges[j].Weight;
 
-                    if (distance[v] > distance[u] + weight)
+                    if (distance[u] != float.MaxValue && distance[u] + weight < distance[v])
                     {
-                        for (int k = 0; k < Verticies.Count - 1; k++)
-                        {
-                            Verticies[v] = path[v];
-                        }
-
-                        Verticies[u] = Verticies[v];
-
-                        while (Verticies[u] != path[v])
-                        {
-                            answer.Add(Verticies[v]);
-                            Verticies[v] = path[v];
-                        }
-                        
-                        answer.Reverse();
-                        
+                        Console.WriteLine("Graph conteins negative cycle!");
                     }
                 }
             }
