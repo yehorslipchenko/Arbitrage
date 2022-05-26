@@ -5,36 +5,36 @@ namespace Arbitrage.Models
 {
     public class Currency
     {
-        public int pair_number;
-        public string token0_address;
-        public string token1_address;
-        public float token0_reverse;
-        public float token1_reverse;
+        public readonly int PairNumber;
+        public readonly string Token0Address;
+        public readonly string Token1Address;
+        public readonly float Token0Reverse;
+        public readonly float Token1Reverse;
 
         public Currency(int pairNumber, string token0Address, string token1Address, float token0Reverse,
             float token1Reverse)
         {
-            pair_number = pairNumber;
-            token0_address = token0Address ?? throw new ArgumentNullException(nameof(token0Address));
-            token1_address = token1Address ?? throw new ArgumentNullException(nameof(token1Address));
-            token0_reverse = token0Reverse;
-            token1_reverse = token1Reverse;
+            PairNumber = pairNumber;
+            Token0Address = token0Address ?? throw new ArgumentNullException(nameof(token0Address));
+            Token1Address = token1Address ?? throw new ArgumentNullException(nameof(token1Address));
+            Token0Reverse = token0Reverse;
+            Token1Reverse = token1Reverse;
         }
 
         public static  List<Currency> Filter(List<Currency> input)
         {
-            var filtered_currency = new List<Currency>();
-            foreach (var cur in input)
+            var filteredCurrency = new List<Currency>();
+            foreach (var currency in input)
             {
                 const float minValue_tokenReverse = (float) 1E+15;
-                if (cur.token0_reverse < minValue_tokenReverse || cur.token1_reverse < minValue_tokenReverse)
+                if (currency.Token0Reverse < minValue_tokenReverse || currency.Token1Reverse < minValue_tokenReverse)
                 {
                     continue;
                 }
-                filtered_currency.Add(cur);
+                filteredCurrency.Add(currency);
             }
 
-            return filtered_currency;
+            return filteredCurrency;
         }
     }
 }
