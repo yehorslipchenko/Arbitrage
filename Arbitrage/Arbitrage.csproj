@@ -48,7 +48,7 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="Data\DataSet.txt" />
-      <Content Include="Data\TestDataSet.txt" />
+      <Content Include="Data\SecondDataSet.txt" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

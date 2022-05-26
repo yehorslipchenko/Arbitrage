@@ -13,7 +13,7 @@ namespace Arbitrage.Models.Graph
             Edges = new List<Edge>();
         }
 
-        public void AddEdge(Edge edge)
+        private void AddEdge(Edge edge)
         {
             Edges.Add(edge);
         }

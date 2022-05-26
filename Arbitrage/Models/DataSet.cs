@@ -28,7 +28,7 @@ namespace Arbitrage.Models
             
         }
 
-        public List<string> CreateDataSet()
+        public IEnumerable<string> CreateDataSet()
         {
             GenerateList();
             var dataSet = new List<string>();
@@ -96,7 +96,7 @@ namespace Arbitrage.Models
 
         }
 
-        public List<Currency> ParseToCurrency(List<string> Input)
+        public static List<Currency> ParseToCurrency(IEnumerable<string> Input)
         {
             var currency = new List<Currency>();
             if (currency == null) throw new ArgumentNullException(nameof(currency));
@@ -111,7 +111,6 @@ namespace Arbitrage.Models
                 var token1Reverse = float.Parse(strCurrency[4]);
                 currency.Add(new Currency(pairNumber,token0Address,token1Address,toke0Reverse,token1Reverse));
             }
-
             return currency;
         }
         
