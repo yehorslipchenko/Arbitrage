@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
+using System.Threading.Tasks;
 
 namespace Arbitrage.Models.Graph
 {
@@ -13,9 +14,9 @@ namespace Arbitrage.Models.Graph
             Verticies = new List<Vertex>();
         }
 
-        public void AddVertex(string name)
+        public void AddVertex(string name, int pn)
         {
-            Verticies.Add(new Vertex(name));
+            Verticies.Add(new Vertex(name, pn));
         }
 
         public Vertex FindVertex(string name)
@@ -46,19 +47,20 @@ namespace Arbitrage.Models.Graph
         {
             foreach (var pair in currencies)
             {
-                var first_vertex_name = pair.token0_address;
-                var second_vertex_name = pair.token1_address;
-                var firstWeight = (float) -Math.Log(pair.token1_reverse / pair.token0_reverse, 2);
-                var secondWeight = (float) -Math.Log(pair.token0_reverse / pair.token1_reverse, 2);
+                var pairNumber = pair.PairNumber;
+                var first_vertex_name = pair.Token0Address;
+                var second_vertex_name = pair.Token1Address;
+                var firstWeight = (float) -Math.Log(pair.Token1Reverse / pair.Token0Reverse, 2);
+                var secondWeight = (float) -Math.Log(pair.Token0Reverse / pair.Token1Reverse, 2);
                 
                 if (FindVertex(first_vertex_name) == null)
                 {
-                    AddVertex(first_vertex_name);
+                    AddVertex(first_vertex_name, pairNumber);
                 }
 
                 if (FindVertex(second_vertex_name) == null)
                 {
-                    AddVertex(second_vertex_name);
+                    AddVertex(second_vertex_name, pairNumber);
                 }
                 
                 AddEdge(first_vertex_name, second_vertex_name, firstWeight, secondWeight);
@@ -66,7 +68,7 @@ namespace Arbitrage.Models.Graph
             }
         }
 
-        public List<Vertex> BellmanFordAlgorithm(int vertex)
+        public async Task<int> BellmanFordAlgorithm(int vertex)
         {
             var answer = new List<Vertex>();
             // Step 1: Initialize distance from vertex to all others vertices
@@ -79,7 +81,7 @@ namespace Arbitrage.Models.Graph
             Vertex[] path = new Vertex[Verticies.Count];
             for (int i = 0; i < path.Length; i++)
             {
-                path[i] = new Vertex("-1");
+                path[i] = new Vertex("-1", -1);
             }
             distance[vertex] = 0;
             
@@ -104,7 +106,7 @@ namespace Arbitrage.Models.Graph
             }
 
             // Step 3: Check for negative-weight cycles.
-            
+            int count = 0;
             for (int i = 0; i < Verticies.Count; i++)
             {
                 for (int j = 0; j < Verticies[i].Edges.Count; j++)
@@ -112,32 +114,15 @@ namespace Arbitrage.Models.Graph
                     int v = i;
                     int u = Verticies.FindIndex(x => x.Name == Verticies[i].Edges[j].Vertex.Name);
                     float weight = Verticies[i].Edges[j].Weight;
-                    var iterV = path[v];
                     if (distance[u] != float.MaxValue && distance[u] + weight < distance[v])
                     {
-                        for (int k = 0; k < Verticies.Count - 1; k++)
-                        {
-                            iterV = path[v];
-                            v = Verticies.FindIndex(x => x.Name == iterV.Name);
-                        }
-                        u = v;
-                        while (Verticies[u] != path[v])
-                        {
-                            iterV = path[v];
-                            answer.Add(Verticies[v]);
-                            v = v = Verticies.FindIndex(x => x.Name == iterV.Name);
-                        }
-                        Console.WriteLine($"{Verticies[u].Name} {Verticies[v].Name} ");
-                        answer.Reverse();
-                        break;
-                        
+                        count++;
+                        Console.WriteLine("Graph conteins negative cycle!");
                     }
-
-                    
                 }
             }
-            
-            return answer;
+
+            return count;
         }
 
         public List<Currency> ArbitrageOpportunity()

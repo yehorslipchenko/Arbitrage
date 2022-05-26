@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+using System.Threading.Tasks;
 using Arbitrage.Models;
 using Arbitrage.Models.Graph;
 
@@ -9,61 +7,42 @@ namespace Arbitrage
 {
     internal static class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
-            /*
+            
             // Welcome script and entering data
             Console.Write("Welcome to Arbitrage\n Please input a path to Data Set:");
             var path = Console.ReadLine();
             Console.Write("Also please input count of currencies:");
-            var count_currency = int.Parse(Console.ReadLine() ?? string.Empty);
-            */
-            const string path = "/Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/Data/DataSet.txt";
-            const int count_currency = 3503;
-            
+            var countCurrency = int.Parse(Console.ReadLine() ?? string.Empty);
+
             // Configuring data and create list of currency how strings 
-            var configureData = new ConfigureData(path, count_currency);
-            var Data = configureData.CreateWorkSet();
+            var configureData = new DataSet(path, countCurrency);
+            var data = configureData.CreateDataSet();
             
             // Changing list of strings to List of currencies 
-            var unFilteredFCurrencies = configureData.ParseToCurrency(Data);
+            var unFiltered = configureData.ParseToCurrency(data);
             
-            // Filtering and counting useful values
-            var countUFCurrencies = unFilteredFCurrencies.Count;
-            var currency = Currency.Filter(unFilteredFCurrencies);
-            var countUCurrencies = currency.Count;
-            
-            // Message of that algorithm will been ready to start, output useful currencies from set and count of unuseful currencies
-            Console.WriteLine($"Algorithm had been started\n" +
-                              $"Count of currencies on start:{countUFCurrencies}\n" +
-                              $"Count of currencies after filter:{countUCurrencies}\n" +
-                              $"Count of thrown out currencies:{countUFCurrencies - countUCurrencies}");
-            
-            
-            
-            
+            // Filtering
+            var currency = Currency.Filter(unFiltered);
             
             // Create Graph
             var graph = new Graph();
             graph.CreateGraph(currency);
             
             // Search arbitrage opportunity
-            var res = graph.BellmanFordAlgorithm(1);
-            var ans = new List<string>();
-            foreach (var v in res)
-            {
-                if (v.Name != "-1")
-                {
-                    ans.Add(v.Name);
-                }
-                
-            }
+            const int indexVertex = 0;
+            var res = await Task.Run(() => graph.BellmanFordAlgorithm(indexVertex));
 
-            foreach (var a in ans)
-            {
-                Console.WriteLine(a);
-            }
+            // Message of that algorithm will been ready to start, output useful currencies from set and count of unuseful currencies
+            Console.WriteLine(
+                $"Algorithm had been started\nCount of currencies on start:{unFiltered.Count}\nCount of currencies after filter:{currency.Count}\nCount of thrown out currencies:{unFiltered.Count - currency.Count}");
             
+
+            // Output of count of negative cycles
+            Console.WriteLine(res != 0
+                ? $"We found {res} negative cycles.\nIt means that market isn't efficient, and we have {res} arbitrage opportunities!"
+                : "Market is not efficient!");
         }
     }
 }
@@ -71,3 +50,4 @@ namespace Arbitrage
 // /Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/Data/DataSet.txt          3503
 // /Users/egorslipchenko/Documents/C#/Arbitrage/Arbitrage/Data/TestDataSet.txt      11
 
+// 'token0_name': 'Wrapped ONE', 'token1_name': 'Binance USD', 'token0_name': 'inHarmony', 'token1_name': 'Wrapped ONE',

@@ -7,7 +7,7 @@ namespace Arbitrage.Models.Graph
         public string Name { get; }
         public List<Edge> Edges { get; }
         
-        public Vertex(string name)
+        public Vertex(string name, int pairNumber)
         {
             Name = name;
             Edges = new List<Edge>();
