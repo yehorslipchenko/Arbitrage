@@ -96,9 +96,9 @@ namespace Arbitrage.Models
 
         }
 
-        public static List<Currency> ParseToCurrency(IEnumerable<string> Input)
+        public static List<Pair> ParseToCurrency(IEnumerable<string> Input)
         {
-            var currency = new List<Currency>();
+            var currency = new List<Pair>();
             if (currency == null) throw new ArgumentNullException(nameof(currency));
             
             foreach (var str in Input)
@@ -109,7 +109,7 @@ namespace Arbitrage.Models
                 var token1Address = strCurrency[2];
                 var toke0Reverse = float.Parse(strCurrency[3]);
                 var token1Reverse = float.Parse(strCurrency[4]);
-                currency.Add(new Currency(pairNumber,token0Address,token1Address,toke0Reverse,token1Reverse));
+                currency.Add(new Pair(pairNumber,token0Address,token1Address,toke0Reverse,token1Reverse));
             }
             return currency;
         }

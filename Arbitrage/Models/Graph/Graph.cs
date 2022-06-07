@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Arbitrage.Models.Graph
 {
@@ -28,7 +29,7 @@ namespace Arbitrage.Models.Graph
             v2.AddEdge(v1, secondWeight);
         }
 
-        public void CreateGraph(IEnumerable<Currency> currencies)
+        public void CreateGraph(IEnumerable<Pair> currencies)
         {
             foreach (var pair in currencies)
             {
@@ -50,7 +51,7 @@ namespace Arbitrage.Models.Graph
             }
         }
 
-        public int BellmanFordAlgorithm(int vertex)
+        public Task<int> BellmanFordAlgorithm(int vertex)
         {
             // Step 1: Initialize distance from vertex to all others vertices
             var distance = new float[Vertices.Count];
@@ -59,11 +60,6 @@ namespace Arbitrage.Models.Graph
                 distance[i] = float.PositiveInfinity;
             }
 
-            var path = new Vertex[Vertices.Count];
-            for (var i = 0; i < path.Length; i++)
-            {
-                path[i] = new Vertex("-1", -1);
-            }
             distance[vertex] = 0;
             
             // Step 2: Relax all edges |V| - 1 times. A simple shortest path from vertex
@@ -78,7 +74,7 @@ namespace Arbitrage.Models.Graph
                         var weight = e.Weight;
                         if (!(distance[v] > distance[u] + weight)) continue;
                         distance[v] = distance[u] + weight;
-                        path[v] = Vertices[u];
+                        // path[v] = Vertices[u];
                     }
                 }
             }
@@ -98,7 +94,7 @@ namespace Arbitrage.Models.Graph
                 }
             }
 
-            return count;
+            return Task.FromResult(count);
         }
     }
 }

@@ -39,7 +39,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Models\DataSet.cs" />
-        <Compile Include="Models\Currency.cs" />
+        <Compile Include="Models\Pair.cs" />
         <Compile Include="Models\Graph\Graph.cs" />
         <Compile Include="Models\Graph\Edge.cs" />
         <Compile Include="Models\Graph\Vertex.cs" />
